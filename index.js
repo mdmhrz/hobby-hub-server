@@ -3,14 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
 
+
+
 // MongoDB 
-
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@clusterofrazu.6jqzkwj.mongodb.net/?retryWrites=true&w=majority&appName=clusterOfRazu`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -26,6 +26,17 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
+
+        const groupCollection = client.db('groupsDB').collection('groups')
+
+        // Post for create group
+
+        app.post('/groups', async (req, res) => {
+            const newGroup = req.body;
+            console.log(newGroup);
+            const result = await groupCollection.insertOne(newGroup)
+            res.send(result);
+        })
 
 
 
