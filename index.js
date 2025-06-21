@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +33,14 @@ async function run() {
         // Get method to get groups Data form DB
         app.get('/groups', async (req, res) => {
             const result = await groupCollection.find().toArray();
+            res.send(result);
+        })
+
+        // Get or Read Data by GET Method R of CRUD only Specific one
+        app.get('/groups/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await groupCollection.findOne(query);
             res.send(result);
         })
 
