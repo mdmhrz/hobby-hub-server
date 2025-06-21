@@ -54,6 +54,24 @@ async function run() {
 
 
 
+
+        // Update Data TO DB
+        app.put('/groups/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedGroup = req.body;
+            // console.log(updatedGroup);
+            const updatedDoc = {
+                $set: updatedGroup
+            }
+
+            const result = await groupCollection.updateOne(filter, updatedDoc, options);
+            res.send(result)
+        })
+
+
+
         // Delete Data by DELETE Method D of CRUD
         app.delete('/groups/:id', async (req, res) => {
             const id = req.params.id;
