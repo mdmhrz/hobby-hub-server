@@ -29,8 +29,14 @@ async function run() {
 
         const groupCollection = client.db('groupsDB').collection('groups')
 
-        // Post for create group
 
+        // Get method to get groups Data form DB
+        app.get('/groups', async (req, res) => {
+            const result = await groupCollection.find().toArray();
+            res.send(result);
+        })
+
+        // Post method for create group
         app.post('/groups', async (req, res) => {
             const newGroup = req.body;
             console.log(newGroup);
