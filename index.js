@@ -50,6 +50,16 @@ async function run() {
             console.log(newGroup);
             const result = await groupCollection.insertOne(newGroup)
             res.send(result);
+        });
+
+
+
+        // Delete Data by DELETE Method D of CRUD
+        app.delete('/groups/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await groupCollection.deleteOne(query);
+            res.send(result)
         })
 
 
